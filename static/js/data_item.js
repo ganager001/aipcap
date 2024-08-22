@@ -20,10 +20,10 @@ $(document).ready(function() {
                 response.rows.forEach(function(item) {
                     table.row.add([
                         item['Timestamp'] || 'N/A',
-                        item['Src MAC'] || 'N/A',
-                        item['Dst MAC'] || 'N/A',
                         item['Dst IP'] || 'N/A',
-                        item['Src IP'] || 'N/A'
+                        item['Src IP'] || 'N/A',
+                        item['Src Port'] || 'N/A',
+                        item['Dst Port'] || 'N/A',
                     ]).draw();
                 });
             },
