@@ -11,13 +11,16 @@ def logpcap_view(request):
 
 def logpcap_filter(request):
     data_dict = csv_to_json()
+    
+    # Xử lý dữ liệu
     for item in data_dict:
         for key, value in item.items():
             if isinstance(value, float) and (math.isinf(value) or math.isnan(value)):
                 item[key] = None
             elif isinstance(value, int) and (value < 0):
                 item[key] = 0
-    
+
+    # Xử lý lọc theo khoảng thời gian
     date_range = request.GET.get('dateRange', None)
     if date_range:
         try:
@@ -27,12 +30,9 @@ def logpcap_filter(request):
         except ValueError:
             return JsonResponse({'error': 'Invalid date range format'}, status=400)
 
-        if start_date and end_date:
-            data_time = {}
-            for item in data_dict:
-                time = parser.parse(item['Timestamp'])
-                if start_date <= time <= end_date:
-                    data_time.append(item)
-            return JsonResponse(data_time, safe=False)
-    first_100_items = data_dict[:500]
-    return JsonResponse(first_100_items, safe=False)
+        filtered_data = [item for item in data_dict if start_date <= parser.parse(item['Timestamp']) <= end_date]
+        return JsonResponse({'rows': filtered_data}, safe=False)
+
+    # Trả về 100 bản ghi đầu tiên khi không có dateRange
+    first_100_items = data_dict[:100]
+    return JsonResponse({'total': len(data_dict), 'rows': first_100_items}, safe=False)
