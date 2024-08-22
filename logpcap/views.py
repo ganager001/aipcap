@@ -6,20 +6,20 @@ import pandas as pd
 import math
 
 
-def formatTime(time):
-    formatted_time = datetime.datetime.fromtimestamp(float(time))
-    time_resual = formatted_time.strftime('%d-%m-%Y %H:%M:%S')
-    return time_resual
+# def formatTime(time):
+#     formatted_time = datetime.datetime.fromtimestamp(float(time))
+#     time_resual = formatted_time.strftime('%d-%m-%Y %H:%M:%S')
+#     return time_resual
 
-def loadData():
-    arr_data = []
-    with open('output/data_output.csv', mode='r', encoding='utf-8') as file:
-        reader = csv.reader(file)
-        next(reader)
-        for row in reader:
-            row[00] = formatTime(row[00])
-            arr_data.append(row)
-    return arr_data
+# def loadData():
+#     arr_data = []
+#     with open('output/data_output.csv', mode='r', encoding='utf-8') as file:
+#         reader = csv.reader(file)
+#         next(reader)
+#         for row in reader:
+#             row[00] = formatTime(row[00])
+#             arr_data.append(row)
+#     return arr_data
 
 
 def logpcap_view(request):
@@ -50,9 +50,9 @@ def logpcap_filter(request):
             except ValueError:
                 return JsonResponse({'error': 'Invalid date range format'}, status=400)
 
-        if start_date and end_date:
-            data['Timestamp'] = pd.to_datetime(data['Timestamp'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')  # Giả sử cột thời gian trong CSV là 'time'
-            data = data[(data['Timestamp'] >= start_date) & (data['Timestamp'] <= end_date)]
+            if start_date and end_date:
+                data['Timestamp'] = pd.to_datetime(data['Timestamp'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')  # Giả sử cột thời gian trong CSV là 'time'
+                data = data[(data['Timestamp'] >= start_date) & (data['Timestamp'] <= end_date)]
 
         # Chuyển dữ liệu sang dạng danh sách từ điển
         data_dict = data.to_dict(orient='records')
