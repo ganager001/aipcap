@@ -34,4 +34,5 @@ def logpcap_filter(request):
                 if start_date <= time <= end_date:
                     data_time.append(item)
             return JsonResponse(data_time, safe=False)
-    return JsonResponse(data_dict, safe=False)
+    first_100_items = data_dict[:500]
+    return JsonResponse(first_100_items, safe=False)
