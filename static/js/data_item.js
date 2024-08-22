@@ -10,6 +10,10 @@ $(document).ready(function() {
                 dateRange: dateRange // Gửi dateRange như một tham số trong yêu cầu
             },
             dataType: 'json',
+            beforeSend: function() {
+                // Hiển thị thông báo "Đang load dữ liệu..."
+                $('#load-runing').html('<div class="alert alert-warning-fill alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>!!! Đang tải dữ liệu</strong> </div>');
+            },
             success: function(data) {
                 // Xóa dữ liệu cũ trong bảng
                 table.clear();
@@ -25,7 +29,11 @@ $(document).ready(function() {
                 });
             },
             error: function(xhr, status, error) {
-                $('#result').html('<p>Error occurred: ' + error + '</p>');
+                $('#load-runing').html('<p>Error occurred: ' + error + '</p>');
+            },
+            complete: function() {
+                // Ẩn thông báo sau khi quá trình load hoàn tất
+                $('#load-runing').html(''); // Hoặc bạn có thể thay đổi nội dung nếu cần
             }
         });
     }
