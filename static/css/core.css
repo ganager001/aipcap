@@ -10221,3 +10221,7 @@ a.text-grey:focus .underline, a.text-grey:hover .underline {
 #noti-error{
   margin-bottom: 5px !important;
 }
+
+.highlight-row{
+  background-color: #f8d7da;
+}

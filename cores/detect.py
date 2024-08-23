@@ -10,6 +10,9 @@ from torch.autograd import Variable
 import sys
 import os
 
+
+
+
 # Thêm thư mục cha vào sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -187,26 +190,25 @@ d =hidden_size
 encoder = Encoder(d)
 decoder = Decoder(d)
 
-
+import joblib
 import torch
 
-with open("/home/ubuntu/Desktop/SIEM/security_system/Detect_AI/Autoencoder.pt", "rb") as f:
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+autoencoder_path = os.path.join(base_dir, 'cores', 'Autoencoder.pt')
+with open(autoencoder_path, "rb") as f:
     encoder.load_state_dict(torch.load(f))
 
-import joblib
-# Tải mô hình từ file
-model = joblib.load('/home/ubuntu/Desktop/SIEM/security_system/Detect_AI/Autoencoder.joblib')
 
 # Tải mô hình từ file
-scaler = joblib.load('/home/ubuntu/Desktop/SIEM/security_system/Detect_AI/saler_new.joblib')
+model = joblib.load(os.path.join(base_dir, 'cores', 'Autoencoder.joblib'))
 
-# Sử dụng hàm
-directory_path = "/home/ubuntu/Desktop/SIEM/security_system/csv"
-latest_file = get_latest_file(directory_path, "csv")
-print(f"File mới nhất: {latest_file}")
+# Tải mô hình từ file
+scaler = joblib.load(os.path.join(base_dir, 'cores', 'saler_new.joblib'))
 
 
-def read_csv_(file):
+
+
+def read_csv(file):
     df = pd.read_csv(file)
     # Xác định header
     header = df.columns.tolist()
@@ -252,7 +254,7 @@ def predic_AE(df,file_name):
     # output.to_csv(output_file_path, index=False)
     base_name = os.path.basename(file_name)
     output_file_name = os.path.splitext(base_name)[0] + '_predictions.csv'
-    output_file_path = os.path.join('/home/ubuntu/Desktop/SIEM/security_system/ouput', output_file_name)
+    output_file_path = os.path.join('output', output_file_name)
     output.to_csv(output_file_path, index=False)
 
     unique_values, value_counts = np.unique(y_pred, return_counts=True)
@@ -262,7 +264,10 @@ def predic_AE(df,file_name):
     print("Số lần xuất hiện tương ứng:", value_counts)
     return y_pred
 
-df=read_csv_(latest_file)
+# Sử dụng hàm
+csv_new_input_path = os.path.join(base_dir, 'data_input')
+latest_file = get_latest_file(csv_new_input_path, "csv")
+df=read_csv(latest_file)
 print("test",df)
 test=predic_AE(df,latest_file)
 

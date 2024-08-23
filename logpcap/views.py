@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from datetime import datetime
 import math
-from .convert_json import csv_to_json
+from cores.convert_json import csv_to_json
 from dateutil import parser
 
 
@@ -10,7 +10,8 @@ def logpcap_view(request):
     return render(request,'logpcap/index.html')
 
 def logpcap_filter(request):
-    data_dict = csv_to_json()
+    csvFile = 'attack_ISCX_predictions.csv'
+    data_dict = csv_to_json(csvFile)
     
     # Xử lý dữ liệu
     for item in data_dict:

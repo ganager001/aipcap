@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('logpcap', include('logpcap.urls')),
+    path('detect', include('detect.urls')),
 ]

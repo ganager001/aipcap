@@ -18,6 +18,7 @@ def get_latest_file(directory, file_extension="*"):
     return latest_file
 
 # Sử dụng hàm
-directory_path = "/home/ubuntu/Desktop/SIEM/security_system/TCPDUMP_and_CICFlowMeter/csv"
-latest_file = get_latest_file(directory_path, "csv")
-print(f"File mới nhất: {latest_file}")
+# base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# directory_path = os.path.join(base_dir, 'data_input')
+# latest_file = get_latest_file(directory_path, "csv")
+# print(f"File mới nhất: {latest_file}")
