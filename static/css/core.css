@@ -10222,6 +10222,15 @@ a.text-grey:focus .underline, a.text-grey:hover .underline {
   margin-bottom: 5px !important;
 }
 
-.highlight-row{
-  background-color: #f8d7da;
+.table-wrapper {
+  width: 100%;
+  max-height: 300px; /* Chiều cao tối đa của bảng, có thể thay đổi */
+  overflow-y: auto; /* Hiển thị thanh cuộn dọc */
+  overflow-x: auto; /* Hiển thị thanh cuộn ngang nếu cần */
+  border: 1px solid #ddd; /* Viền bảng */
+}
+
+.table-wrapper>table{
+  width: 100%;
+  border-collapse: collapse;
 }
