@@ -6,7 +6,7 @@ from django.http import JsonResponse
 
 def csv_to_json(csvFile):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    csv_file_path = os.path.join(base_dir, 'output', csvFile)
+    csv_file_path = os.path.join(base_dir, 'data_output', csvFile)
 
     if not os.path.exists(csv_file_path):
             return JsonResponse({"error": "File không tồn tại"}, status=404)

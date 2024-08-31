@@ -11,65 +11,24 @@
         <link rel="stylesheet" href="{% static 'vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/bootstrap-daterangepicker/daterangepicker.css' %}">
 
-        <script type="text/javascript" src="{% static 'vendor/chartjs/Chart.bundle.min.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 {% block content %}
                         
                         <div class="box box-block bg-white">
                             <div class="row">
-                                {% if data.srcip_count %}
                                 <div class="col-md-4 mb-1 mb-md-0">
-                                    <h5 class="mb-1">Thống kê Srcip</h5>
-                                    <div class="table-wrapper">
-                                        <table>
-                                            <tr>
-                                              <th>Srcip</th>
-                                              <th>Số lần xuất hiện</th>
-                                            </tr>
-                                            {% for key, value in data.srcip_count.items %}
-                                            <tr>
-                                                <td style="border: 1px solid black;">{{ key }}</td>
-                                                <td style="border: 1px solid black;">{{ value }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </table>
-                                    </div>
+                                    <h5 class="mb-1">Thống kê Source Ip</h5>
+                                    <canvas id="SourceIpChart" width="100%" height="500px"></canvas>
                                 </div>
-                                <div class="col-md-4 mb-1 mb-md-0">
-                                    <h5 class="mb-1">Thống kê Srcport</h5>
-                                    <div class="table-wrapper">
-                                        <table>
-                                            <tr>
-                                              <th>Srcport</th>
-                                              <th>Số lần xuất hiện</th>
-                                            </tr>
-                                            {% for key, value in data.srcport_count.items %}
-                                            <tr>
-                                                <td style="border: 1px solid black;">{{ key }}</td>
-                                                <td style="border: 1px solid black;">{{ value }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </table>
-                                    </div>
+                                <!-- <div class="col-md-4 mb-1 mb-md-0">
+                                    <h5 class="mb-1">Thống kê Source Port</h5>
+                                    
+                                </div> -->
+                                <div class="col-md-8 mb-1 mb-md-0">
+                                    <h5 class="mb-1">Thống kê Destination Port</h5>
+                                    <canvas id="DestPortChart" width="100%" ></canvas>
                                 </div>
-                                <div class="col-md-4 mb-1 mb-md-0">
-                                    <h5 class="mb-1">Thống kê Destport</h5>
-                                    <div class="table-wrapper">
-                                        <table>
-                                            <tr>
-                                              <th>Destport</th>
-                                              <th>Số lần xuất hiện</th>
-                                            </tr>
-                                            {% for key, value in data.destport_count.items %}
-                                            <tr>
-                                                <td style="border: 1px solid black;">{{ key }}</td>
-                                                <td style="border: 1px solid black;">{{ value }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </table>
-                                    </div>
-                                </div>
-                                {% endif %}
                             </div>
                         </div>
                         <div class="box box-block bg-white">
@@ -107,20 +66,6 @@
 {% endblock %}
 
 {% block script %}
-        <script>
-            var endpointUrl = "{% url 'call_logsnort' %}";
-            var data = {
-                series: [5, 3, 4]
-                };
-
-                var sum = function(a, b) { return a + b };
-
-                new Chartist.Pie('#pie', data, {
-                labelInterpolationFnc: function(value) {
-                    return Math.round(value / data.series.reduce(sum) * 100) + '%';
-                }
-                });
-        </script>
         <script type="text/javascript" src="{% static 'vendor/DataTables/js/jquery.dataTables.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'vendor/DataTables/js/dataTables.bootstrap4.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'vendor/DataTables/Responsive/js/dataTables.responsive.min.js' %}"></script>
@@ -141,7 +86,77 @@
         <script type="text/javascript" src="{% static 'vendor/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/forms-pickers.js' %}"></script>
         
-        <script type="text/javascript" src="{% static 'js/data_snort.js' %}"></script>
         
-		<script type="text/javascript" src="{% static 'js/charts-chartjs.js' %}"></script>
+        <script>
+            var endpointUrl = "{% url 'call_logsnort' %}";
+            
+            // SourceIpChart
+            var ctx = document.getElementById('SourceIpChart').getContext('2d');
+            var labels_port = JSON.parse('{{ labels_port|safe }}');
+            var values_port = JSON.parse('{{ values_port|safe }}');
+            var myChart = new Chart(ctx, {
+                type: 'pie', // You can change this to 'line', 'pie', etc.
+                data: {
+                    labels: labels_port,
+                    datasets: [{
+                        label: labels_port,
+                        data: values_port,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // DestPortChart
+            var ctx = document.getElementById('DestPortChart').getContext('2d');
+            var labels_port = JSON.parse('{{ labels_srcip|safe }}');
+            var values_port = JSON.parse('{{ values_srcip|safe }}');
+            var myChart = new Chart(ctx, {
+                type: 'bar', // You can change this to 'line', 'pie', etc.
+                data: {
+                    labels: labels_port,
+                    datasets: [{
+                        label: labels_port,
+                        data: values_port,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+        <script type="text/javascript" src="{% static 'js/data_snort.js' %}"></script>
 {% endblock %}

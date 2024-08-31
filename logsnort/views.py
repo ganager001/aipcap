@@ -6,6 +6,7 @@ import pandas as pd
 import math
 from cores.convert_snort import read_snort
 from collections import Counter
+import json
 
 
 def data_snort():
@@ -28,8 +29,22 @@ def logsnort_view(request):
             'srcport_count': dict(Counter(srcport_list)),
             'destport_count': dict(Counter(destport_list))
         }
-        
-    return render(request, 'logsnort/index.html',context = {'data':data})
+        # srcip_count
+        srcip_data = dict(Counter(srcip_list))
+        labels_srcip = list(srcip_data.keys())
+        values_srcip = list(srcip_data.values())
+
+        # destport_count
+        destport_data = dict(Counter(destport_list))
+        labels_port = list(destport_data.keys())
+        values_port = list(destport_data.values())
+        context = {
+            'labels_srcip': json.dumps(labels_srcip),
+            'values_srcip': json.dumps(values_srcip),
+            'labels_port' : json.dumps(labels_port),
+            'values_port' : json.dumps(values_port)
+        }
+    return render(request, 'logsnort/index.html',context)
 
 def call_logsnort(request):
     snort_list = data_snort()

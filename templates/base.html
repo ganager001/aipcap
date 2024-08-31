@@ -774,6 +774,7 @@
 		</div>
 
 		<!-- Vendor JS -->
+		
 		<script type="text/javascript" src="{% static 'vendor/jquery/jquery-1.12.3.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'vendor/tether/js/tether.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'vendor/bootstrap4/js/bootstrap.min.js' %}"></script>
@@ -784,24 +785,13 @@
 		<script type="text/javascript" src="{% static 'vendor/jquery-fullscreen-plugin/jquery.fullscreen-min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'vendor/waves/waves.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'vendor/switchery/dist/switchery.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/flot/jquery.flot.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/flot/jquery.flot.resize.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/CurvedLines/curvedLines.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/TinyColor/tinycolor.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/sparkline/jquery.sparkline.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/raphael/raphael.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/morris/morris.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/jvectormap/jquery-jvectormap-2.0.3.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/jvectormap/jquery-jvectormap-world-mill.js' %}"></script>
-		<script type="text/javascript" src="{% static 'vendor/peity/jquery.peity.js' %}"></script>
-		{% block script %}{% endblock %}
+		
 		<!--  JS -->
         <script>
             var systemInfoUrl = "{% url 'system_info' %}";
         </script>
 		<script type="text/javascript" src="{% static 'js/app.js' %}"></script>
 		<script type="text/javascript" src="{% static 'js/demo.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+		{% block script %}{% endblock %}
 	</body>
 </html>
