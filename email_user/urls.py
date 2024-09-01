@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.emailUser_view, name='emailUser'),
-    # path('system-info/', views.system_info, name='system_info'),
+    path('/save_email', views.save_email, name='save_email'),
 ]

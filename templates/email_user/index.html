@@ -10,15 +10,39 @@
         <link rel="stylesheet" href="{% static 'vendor/clockpicker/dist/bootstrap-clockpicker.min.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
         <link rel="stylesheet" href="{% static 'vendor/bootstrap-daterangepicker/daterangepicker.css' %}">
+        <style>
+            .messages-email {
+                padding: 15px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+                background-color: #d4edda;
+                color: #155724;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+                transition: opacity 0.5s ease;
+            }
+
+        </style>
 {% endblock %}
 {% block content %}
+                        {% if messages %}
+                            <div class="messages-email">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                         <div class="box box-block bg-white">
                             <div class="box-email">
                                 <div class="box-emailTitle">
                                     <h5 class="mb-1">Danh sách Email</h5>
                                 </div>
                                 <div class="box-emailTitle">
-                                    <button type="button" class="btn btn-success btn-rounded w-min-sm mb-0-25 waves-effect waves-light">Success</button>
+                                    <button id="add-email" type="button" class="btn btn-success btn-rounded w-min-sm mb-0-25 waves-effect waves-light" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Thêm Email</button>
                                 </div>
                             </div>
                             
@@ -43,15 +67,54 @@
                                     <tbody>
                                         {% for item in data_email %}
                                             <tr>
-                                                <td>{{item[0].name}}</td>
-                                                <td>{{item[1].dayofbirth}}</td>
-                                                <td>{{item[2].email}}</td>
-                                                <td>{{item[3].phone}}</td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.birthday}}</td>
+                                                <td>{{item.email}}</td>
+                                                <td>{{item.phone}}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
                                     
                                 </table>
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="exampleModalLabel">Đăng ký Email nhận thông báo</h4>
+                                    </div>
+                                    <form action="/email/save_email" method="post">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="input-fullname" class="form-control-label">Họ tên:</label>
+                                                <input type="text" class="form-control" name="input-fullname" placeholder="vd: Nguyễn Thị Kiểu">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="input-birthday" class="form-control-label">Ngày sinh:</label>
+                                                <input type="text" class="form-control" name="input-birthday" placeholder="vd: 18/10/1986">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="input-email" class="form-control-label">Email:</label>
+                                                <input type="text" class="form-control" name="input-email" placeholder="vd: nguyenthikieu@gmail.com">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="input-phone" class="form-control-label">Điện thoại:</label>
+                                                <input type="text" class="form-control" name="input-phone" placeholder="vd: 0905856248">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-primary">Đăng ký</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
 {% endblock %}
@@ -76,7 +139,12 @@
         <script type="text/javascript" src="{% static 'vendor/moment/moment.js' %}"></script>
         <script type="text/javascript" src="{% static 'vendor/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/forms-pickers.js' %}"></script>
-        <!-- <script>
-            var endpointUrl = "{% url 'logpcap_filter' %}";
-        </script> -->
+        <script type="text/javascript" src="{% static 'js/js/ui-modal.js' %}"></script>
+        <script>
+            $('.messages-email').each(function() {
+                setTimeout(function() {
+                    $('.messages-email').fadeOut(500); 
+                }, 3000); 
+            });
+        </script>
 {% endblock %}
