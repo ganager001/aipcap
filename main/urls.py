@@ -23,4 +23,5 @@ urlpatterns = [
     path('detect', include('detect.urls')),
     path('logpcap', include('logpcap.urls')),
     path('logsnort', include('logsnort.urls')),
+    path('email', include('email_user.urls')),
 ]

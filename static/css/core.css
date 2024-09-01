@@ -10234,3 +10234,9 @@ a.text-grey:focus .underline, a.text-grey:hover .underline {
   width: 100%;
   border-collapse: collapse;
 }
+
+.box-email{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
