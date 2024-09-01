@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    
     // logpcap
     function loadLogpcap(dateRange){
         var endpointUrl = window.endpointUrl;
@@ -41,6 +42,8 @@ $(document).ready(function() {
         var dateRange = $('input[name="daterange-with-time"]').val(); // Lấy giá trị từ input
         loaddata(dateRange);
     });
+    // Gọi hàm fetchData mỗi 3 phút
+    setInterval(loadLogpcap, 30000);
 
     // detect
     function loadDetect(){

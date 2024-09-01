@@ -42,7 +42,7 @@
 						<li>
 							<a href="#" class="waves-effect  waves-light">
 								<span class="s-icon"><i class="ti-palette"></i></span>
-								<span class="s-text">Thống kê hệ thống</span>
+								<span class="s-text">Thống kê dữ liệu mạng</span>
 							</a>
 						</li>
 						<li class="menu-title">QUẢN LÝ</li>
@@ -51,11 +51,11 @@
 								<span class="s-caret"><i class="fa fa-angle-down"></i></span>
 								<span class="tag tag-danger">3</span>
 								<span class="s-icon"><i class="ti-package"></i></span>
-								<span class="s-text">Giám sát dữ liệu mạng</span>
+								<span class="s-text">Phát hiện tấn công trinh sát</span>
 							</a>
 							<ul>
 								<li><a href="{% url 'detect' %}">Phát hiện bất thường</a></li>
-								<li><a href="#">Phát hiện realtime</a></li>
+								<li><a href="{% url 'logpcap' %}">Phát hiện realtime Pcap</a></li>
 							</ul>
 						</li>
 						<li class="with-sub">
@@ -66,7 +66,6 @@
 								<span class="s-text">Quản lý dữ liệu log</span>
 							</a>
 							<ul>
-								<li><a href="{% url 'logpcap' %}">Log pcap file</a></li>
 								<li><a href="{% url 'logsnort' %}">Log Snort</a></li>
 							</ul>
 						</li>

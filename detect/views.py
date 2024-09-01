@@ -1,18 +1,21 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from datetime import datetime
-import math
+import math,os
 from cores.convert_json import csv_to_json
 from dateutil import parser
 from django.views.decorators.csrf import csrf_exempt
-
+from cores.get_latest_file import get_latest_file
 
 def detect_view(request):
     return render(request,'detect/index.html')
 
 def detect_core():
-    csvFile = 'normal_ISCX_predictions.csv'
-    data_dict = csv_to_json(csvFile)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    directory_path = os.path.join(base_dir, 'data_output', "normal_ISCX_predictions.csv")
+    # latest_file = get_latest_file(directory_path)
+    # csvFile = 'normal_ISCX_predictions.csv'
+    data_dict = csv_to_json(directory_path)
     
     # Xử lý dữ liệu
     for item in data_dict:

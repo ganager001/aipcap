@@ -1,17 +1,20 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from datetime import datetime
-import math
+import math,os
 from cores.convert_json import csv_to_json
 from dateutil import parser
+from cores.get_latest_file import get_latest_file
 
 
 def logpcap_view(request):
     return render(request,'logpcap/index.html')
 
 def logpcap_filter(request):
-    csvFile = 'attack_ISCX_predictions.csv'
-    data_dict = csv_to_json(csvFile)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    directory_path = os.path.join(base_dir, 'data_input')
+    latest_file = get_latest_file(directory_path, "csv")
+    data_dict = csv_to_json(latest_file)
     
     # Xử lý dữ liệu
     for item in data_dict:
@@ -35,5 +38,5 @@ def logpcap_filter(request):
         return JsonResponse({'rows': filtered_data}, safe=False)
 
     # Trả về 100 bản ghi đầu tiên khi không có dateRange
-    first_100_items = data_dict[:100]
+    first_100_items = data_dict[:1000]
     return JsonResponse({'total': len(data_dict), 'rows': first_100_items}, safe=False)
