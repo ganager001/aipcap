@@ -85,11 +85,11 @@ $(document).ready(function() {
                         let dstIpColor = ''; // Biến để lưu màu sắc của 'Dst IP'
     
                         if (item['Label'] === '1.0') {
-                            dstIpColor = 'color:red'; // Đặt màu đỏ nếu 'Label' là '1.0'
+                            dstIpColor = 'background-color:#e7b6b6'; // Đặt màu đỏ nếu 'Label' là '1.0'
                         }
-                        tableBody+=`<tr>
+                        tableBody+=`<tr style="` + dstIpColor + `">
                             <td>` + item['Timestamp'] + `</td>
-                            <td style="` + dstIpColor + `">` + item['Dst IP'] + `</td>
+                            <td>` + item['Dst IP'] + `</td>
                             <td>` + item['Src IP'] + `</td>
                             <td>` + item['Src Port'] + `</td>
                             <td>` + item['Dst Port'] + `</td>
@@ -128,4 +128,78 @@ $(document).ready(function() {
     };
     loadDetect();
 
+    // lọc theo thời gian
+    function filterDataDetect(){
+        $('#send-data-time-detect').click(function(event) {
+            event.preventDefault();
+            var detectFilterTimeUrl = window.detectFilterTimeUrl;
+            
+            // Gửi file qua AJAX
+            $.ajax({
+                url: detectFilterTimeUrl,  // Đường dẫn đến server xử lý
+                type: 'POST',
+                processData: false,  // Không xử lý dữ liệu gửi đi
+                contentType: false,  // Không thiết lập loại nội dung (mặc định sẽ tự động thiết lập)
+                success: function(response) {
+                    $('#content-detect').html(
+                        `<h5 class="mb-2">Thống kê</h5><div class="row row-md">
+							<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+								<div class="box box-block tile tile-2 bg-danger mb-2">
+									<div class="t-icon right"><i class="ti-shopping-cart-full"></i></div>
+									<div class="t-content">
+										<h1 class="mb-1">`+response.count+`</h1>
+										<h6 class="text-uppercase">Nghi ngờ tấn công</h6>
+									</div>
+								</div>
+							</div>
+						</div>`
+                    );
+                    // Tạo HTML cho bảng dữ liệu
+                    var tableBody = '';
+                    response.data.forEach(function(item) {
+                        let dstIpColor = ''; // Biến để lưu màu sắc của 'Dst IP'
+    
+                        if (item['Label'] === '1.0') {
+                            dstIpColor = 'background-color:#e7b6b6'; // Đặt màu đỏ nếu 'Label' là '1.0'
+                        }
+                        tableBody+=`<tr style="` + dstIpColor + `">
+                            <td>` + item['Timestamp'] + `</td>
+                            <td>` + item['Dst IP'] + `</td>
+                            <td>` + item['Src IP'] + `</td>
+                            <td>` + item['Src Port'] + `</td>
+                            <td>` + item['Dst Port'] + `</td>
+                            <td>` + item['Label'] + `</td>
+                        </tr>`;
+                    });
+                    $('#table-detect').html(
+                        `<div class="box box-block bg-white">
+                            <h5 class="mb-1">Danh sách dữ liệu phân tích</h5>
+                            <div class="overflow-x-auto">
+                                <table class="table table-striped table-bordered dataTable" id="table-3">
+                                    <thead>
+                                        <tr>
+                                            <th>Thời gian</th>
+                                            <th>Dst IP</th>
+                                            <th>Src IP</th>
+                                            <th>Src Port</th>
+                                            <th>Dst Port</th>
+                                            <th>Lable</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ` + tableBody + `
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>`
+                    );
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Xử lý lỗi
+                    alert('Có lỗi xảy ra trong quá trình tải lên');
+                }
+            });
+        });
+    };
+    filterDataDetect();
 });

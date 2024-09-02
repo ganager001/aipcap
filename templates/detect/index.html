@@ -22,6 +22,19 @@
     </form>
 </div>
 <div class="box box-block bg-white">
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Tìm kiếm theo thời gian</h5>
+            <p class="font-90 text-muted mb-1">Lựa chọn dữ liệu theo thời gian .</p>
+            <form action="" class="form-filtertime" method="POST">
+                {% csrf_token %}
+                <input class="form-control" type="text" name="daterange-with-time" value="01/01/2024 1:30 PM - 01/01/2024 11:00 PM" />
+                <button id="send-data-time-detect" class="btn btn-success btn-rounded w-min-sm mb-0-25 waves-effect waves-light">Tìm kiếm</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="box box-block bg-white">
     <div id="content-detect">
         
     </div>
@@ -58,6 +71,7 @@
 <script type="text/javascript" src="{% static 'js/forms-pickers.js' %}"></script>
 <script>
     var detectUrl = "{% url 'detect_filter' %}";
+    var detectFilterTimeUrl = "{% url 'detectFilterTimeUrl' %}";
 </script>
 <script type="text/javascript" src="{% static 'js/data_item.js' %}"></script>
 {% endblock %}
