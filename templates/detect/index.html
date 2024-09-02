@@ -17,7 +17,7 @@
     <form id="uploadForm">
         {% csrf_token %}
         <label for="myfile">Chọn file pcap:</label>
-        <input type="file" id="pcap-file" name="pcap-file"><br><br>
+        <input type="file" id="pcap-file" name="pcap-file" accept=".pcap" required><br><br>
         <button type="button" id="detect-submit" class="btn btn-success w-min-sm mb-0-25 waves-effect waves-light">Thực hiện</button>
     </form>
 </div>

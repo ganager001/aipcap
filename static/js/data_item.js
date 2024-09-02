@@ -27,6 +27,8 @@ $(document).ready(function() {
                         item['Dst Port'] || 'N/A',
                     ]).draw();
                 });
+                
+                $('#count-ip-pcap').text(response.total);
             },
             error: function(xhr, status, error) {
                 $('#load-runing').html('<p>Error occurred: ' + error + '</p>');
@@ -80,10 +82,14 @@ $(document).ready(function() {
                     // Tạo HTML cho bảng dữ liệu
                     var tableBody = '';
                     response.data.forEach(function(item) {
-                        var rowClass = item['Label'] === '1.0' ? 'class="highlight-row"' : '';
-                        tableBody += `<tr ` + rowClass + `>
+                        let dstIpColor = ''; // Biến để lưu màu sắc của 'Dst IP'
+    
+                        if (item['Label'] === '1.0') {
+                            dstIpColor = 'color:red'; // Đặt màu đỏ nếu 'Label' là '1.0'
+                        }
+                        tableBody+=`<tr>
                             <td>` + item['Timestamp'] + `</td>
-                            <td>` + item['Dst IP'] + `</td>
+                            <td style="` + dstIpColor + `">` + item['Dst IP'] + `</td>
                             <td>` + item['Src IP'] + `</td>
                             <td>` + item['Src Port'] + `</td>
                             <td>` + item['Dst Port'] + `</td>
@@ -96,16 +102,6 @@ $(document).ready(function() {
                             <div class="overflow-x-auto">
                                 <table class="table table-striped table-bordered dataTable" id="table-3">
                                     <thead>
-                                        <tr>
-                                            <th>Thời gian</th>
-                                            <th>Dst IP</th>
-                                            <th>Src IP</th>
-                                            <th>Src Port</th>
-                                            <th>Dst Port</th>
-                                            <th>Lable</th>
-                                        </tr>
-                                    </thead>
-                                    <thead class="thread_search">
                                         <tr>
                                             <th>Thời gian</th>
                                             <th>Dst IP</th>

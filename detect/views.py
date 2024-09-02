@@ -28,8 +28,24 @@ def detect_core():
 
 @csrf_exempt
 def detect_filter(request):
+    # tải file pcap xử lý
     if request.method == 'POST' and 'pcap-file' in request.FILES:
-        pcapFile = request.FILES['pcap-file']      
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        uploaded_file = request.FILES['pcap-file']
+        save_path = os.path.join(base_dir, 'data_input', uploaded_file.name)
+        
+        with open(save_path, 'wb+') as destination:
+            for chunk in uploaded_file.chunks():
+                destination.write(chunk)      
         data = detect_core()
-        count = sum(1 for item in data if item["Label"] == '1.0')
+        unique_src_ips = []
+        count = 0
+        
+        for item in data:
+            if item["Label"] == '1.0':
+                src_ip = item['Src IP']
+                if src_ip not in unique_src_ips:
+                    unique_src_ips.append(src_ip)
+                    count += 1
+
     return JsonResponse({'count': count, 'data': data}, safe=False)

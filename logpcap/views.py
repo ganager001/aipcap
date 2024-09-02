@@ -38,5 +38,13 @@ def logpcap_filter(request):
         return JsonResponse({'rows': filtered_data}, safe=False)
 
     # Trả về 100 bản ghi đầu tiên khi không có dateRange
-    first_100_items = data_dict[:1000]
-    return JsonResponse({'total': len(data_dict), 'rows': first_100_items}, safe=False)
+    first_100_items = data_dict[:1500]
+
+    unique_src_ips = set()
+    count = 1
+    for item in data_dict:
+        src_ip = item['Src IP']
+        if src_ip not in unique_src_ips:
+            unique_src_ips.add(src_ip)
+            count += 1
+    return JsonResponse({'total': count, 'rows': first_100_items}, safe=False)
