@@ -17,8 +17,14 @@ $(document).ready(function() {
             success: function(response) {
                 // Xóa dữ liệu cũ trong bảng
                 table.clear();
+                
                 // Thêm các hàng dữ liệu mới
                 response.rows.forEach(function(item) {
+                    if (item['Label'] === '1.0') {
+                        item['Label'] = 'PortScan';
+                    } else {
+                        item['Label'] = 'BEGIN';
+                    }
                     var rowNode = table.row.add([
                         item['Timestamp'] || 'N/A',
                         item['Dst IP'] || 'N/A',
@@ -28,9 +34,8 @@ $(document).ready(function() {
                         item['Label'] || 'N/A',
                     ]).draw().node(); // Lấy node của dòng vừa thêm
                 
-                    // Kiểm tra nếu item['Label'] là '1.0'
-                    if (item['Label'] == '1.0') {
-                        $(rowNode).addClass('red-row'); // Thêm lớp CSS để đổi màu dòng
+                    if (item['Label'] === 'PortScan') {
+                        $(rowNode).addClass('red-row');
                     }
                 });
                 $('#count-ip-pcap').text(response.total);
@@ -87,19 +92,26 @@ $(document).ready(function() {
                     // Tạo HTML cho bảng dữ liệu
                     var tableBody = '';
                     response.data.forEach(function(item) {
-                        let dstIpColor = ''; // Biến để lưu màu sắc của 'Dst IP'
-    
+                        let dstIpColor = ''; // Biến để lưu màu sắc của dòng
+                    
+                        // Kiểm tra và thay đổi giá trị của 'Label'
                         if (item['Label'] === '1.0') {
-                            dstIpColor = 'background-color:#e7b6b6'; // Đặt màu đỏ nếu 'Label' là '1.0'
+                            item['Label'] = 'PortScan';
+                            dstIpColor = 'background-color:#e7b6b6'; // Đặt màu nền đỏ nếu 'Label' là '1.0'
+                        } else {
+                            item['Label'] = 'BEGIN';
                         }
-                        tableBody+=`<tr style="` + dstIpColor + `">
-                            <td>` + item['Timestamp'] + `</td>
-                            <td>` + item['Dst IP'] + `</td>
-                            <td>` + item['Src IP'] + `</td>
-                            <td>` + item['Src Port'] + `</td>
-                            <td>` + item['Dst Port'] + `</td>
-                            <td>` + item['Label'] + `</td>
-                        </tr>`;
+                    
+                        // Tạo dòng cho bảng với màu sắc và nội dung phù hợp
+                        tableBody += `
+                            <tr style="${dstIpColor}">
+                                <td>${item['Timestamp']}</td>
+                                <td>${item['Dst IP']}</td>
+                                <td>${item['Src IP']}</td>
+                                <td>${item['Src Port']}</td>
+                                <td>${item['Dst Port']}</td>
+                                <td>${item['Label']}</td>
+                            </tr>`;
                     });
                     $('#table-detect').html(
                         `<div class="box box-block bg-white">
@@ -162,18 +174,22 @@ $(document).ready(function() {
                     // Tạo HTML cho bảng dữ liệu
                     var tableBody = '';
                     response.data.forEach(function(item) {
-                        let dstIpColor = ''; // Biến để lưu màu sắc của 'Dst IP'
-    
+                        let dstIpColor = ''; // Biến để lưu màu sắc của dòng
+
                         if (item['Label'] === '1.0') {
+                            item['Label'] = 'PortScan';
                             dstIpColor = 'background-color:#e7b6b6'; // Đặt màu đỏ nếu 'Label' là '1.0'
+                        } else {
+                            item['Label'] = 'BEGIN';
                         }
-                        tableBody+=`<tr style="` + dstIpColor + `">
-                            <td>` + item['Timestamp'] + `</td>
-                            <td>` + item['Dst IP'] + `</td>
-                            <td>` + item['Src IP'] + `</td>
-                            <td>` + item['Src Port'] + `</td>
-                            <td>` + item['Dst Port'] + `</td>
-                            <td>` + item['Label'] + `</td>
+
+                        tableBody += `<tr style="${dstIpColor}">
+                            <td>${item['Timestamp']}</td>
+                            <td>${item['Dst IP']}</td>
+                            <td>${item['Src IP']}</td>
+                            <td>${item['Src Port']}</td>
+                            <td>${item['Dst Port']}</td>
+                            <td>${item['Label']}</td>
                         </tr>`;
                     });
                     $('#table-detect').html(
