@@ -43,7 +43,7 @@ def detect_filter(request):
         
         for item in data:
             if item["Label"] == '1.0':
-                src_ip = item['Src IP']
+                src_ip = item['Dst IP']
                 if src_ip not in unique_src_ips:
                     unique_src_ips.append(src_ip)
                     count += 1
@@ -77,7 +77,7 @@ def logpcap_filter_time(request):
     first_100_items = data_dict[:1500]
 
     unique_src_ips = set()
-    count = 1
+    count = 0
     for item in data_dict:
         src_ip = item['Src IP']
         if src_ip not in unique_src_ips:

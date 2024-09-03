@@ -12,7 +12,7 @@ def logpcap_view(request):
 
 def logpcap_filter(request):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    directory_path = os.path.join(base_dir, 'data_input')
+    directory_path = os.path.join(base_dir, 'data_output')
     latest_file = get_latest_file(directory_path, "csv")
     data_dict = csv_to_json(latest_file)
     
@@ -40,11 +40,11 @@ def logpcap_filter(request):
     # Trả về 100 bản ghi đầu tiên khi không có dateRange
     first_100_items = data_dict[:1500]
 
-    unique_src_ips = set()
-    count = 1
+    unique_src_ips = []
+    count = 0
     for item in data_dict:
         src_ip = item['Src IP']
         if src_ip not in unique_src_ips:
-            unique_src_ips.add(src_ip)
+            unique_src_ips.append(src_ip)
             count += 1
     return JsonResponse({'total': count, 'rows': first_100_items}, safe=False)

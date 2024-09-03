@@ -19,15 +19,20 @@ $(document).ready(function() {
                 table.clear();
                 // Thêm các hàng dữ liệu mới
                 response.rows.forEach(function(item) {
-                    table.row.add([
+                    var rowNode = table.row.add([
                         item['Timestamp'] || 'N/A',
                         item['Dst IP'] || 'N/A',
                         item['Src IP'] || 'N/A',
                         item['Src Port'] || 'N/A',
                         item['Dst Port'] || 'N/A',
-                    ]).draw();
-                });
+                        item['Label'] || 'N/A',
+                    ]).draw().node(); // Lấy node của dòng vừa thêm
                 
+                    // Kiểm tra nếu item['Label'] là '1.0'
+                    if (item['Label'] == '1.0') {
+                        $(rowNode).addClass('red-row'); // Thêm lớp CSS để đổi màu dòng
+                    }
+                });
                 $('#count-ip-pcap').text(response.total);
             },
             error: function(xhr, status, error) {

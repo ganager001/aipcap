@@ -40,7 +40,7 @@ def emailUser_view(request):
 
 def file_path_email():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    file_path = os.path.join(base_dir, 'data_output', 'email_user.csv')
+    file_path = os.path.join(base_dir, 'data', 'email_user.csv')
     return file_path
 
 
