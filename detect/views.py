@@ -43,7 +43,7 @@ def detect_filter(request):
         
         for item in data:
             if item["Label"] == '1.0':
-                src_ip = item['Dst IP']
+                src_ip = item['Src IP']
                 if src_ip not in unique_src_ips:
                     unique_src_ips.append(src_ip)
                     count += 1
