@@ -649,22 +649,18 @@
 							<li class="nav-item dropdown hidden-sm-down">
 								<a href="index.html#" data-toggle="dropdown" aria-expanded="false">
 									<span class="avatar box-32">
-										<img src="img/avatars/1.jpg" alt="">
+										<img src="{% static 'img/avatars/1.jpg' %}" alt="">
 									</span>
 								</a>
 								<div class="dropdown-menu dropdown-menu-right animated fadeInUp">
+									{% if user.is_authenticated %}
 									<a class="dropdown-item" href="index.html#">
-										<i class="ti-email mr-0-5"></i> Inbox
-									</a>
-									<a class="dropdown-item" href="index.html#">
-										<i class="ti-user mr-0-5"></i> Profile
-									</a>
-									<a class="dropdown-item" href="index.html#">
-										<i class="ti-settings mr-0-5"></i> Settings
+										<i class="ti-user mr-0-5"></i> {{ user.username }}
 									</a>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="index.html#"><i class="ti-help mr-0-5"></i> Help</a>
-									<a class="dropdown-item" href="index.html#"><i class="ti-power-off mr-0-5"></i> Sign out</a>
+									<a class="dropdown-item" href="{% url 'logout' %}"><i class="ti-power-off mr-0-5"></i> Đăng xuất</a>
+									{% endif %}
+									
 								</div>
 							</li>
 						</ul>

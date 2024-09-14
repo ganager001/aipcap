@@ -7,6 +7,9 @@ import math
 from cores.convert_snort import read_snort
 from collections import Counter
 import json
+from django.contrib.auth.decorators import login_required
+
+
 
 
 def data_snort():
@@ -15,6 +18,8 @@ def data_snort():
     snort_list = read_snort(file_path)
     return snort_list
 
+
+@login_required
 def logsnort_view(request):
     snort_list = data_snort()
     if snort_list is not None:

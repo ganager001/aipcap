@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 import csv
 import os
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 def save_email(request):
     if request.method == "POST":
@@ -14,7 +16,7 @@ def save_email(request):
         messages.success(request, 'Thêm dữ liệu Email thành công!')
         return redirect('emailUser')
 
-
+@login_required
 def emailUser_view(request):
     file_path = file_path_email()
     dataEmail = []

@@ -5,8 +5,10 @@ import math,os
 from cores.convert_json import csv_to_json
 from dateutil import parser
 from cores.get_latest_file import get_latest_file
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def logpcap_view(request):
     return render(request,'logpcap/index.html')
 
